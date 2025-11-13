@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignment #3 - Loops</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(180deg, #e5d4c1 0%, #d6c5b2 50%, #c7b6a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 115, 85, 0.03) 2px, rgba(139, 115, 85, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .pixel-person {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+            animation: float 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 2;
+            font-size: 32px;
+        }
+
+        .person-1 { top: 10%; left: 6%; animation-delay: 0s; }
+        .person-2 { top: 24%; right: 8%; animation-delay: 1.3s; }
+        .person-3 { top: 50%; left: 3%; animation-delay: 2.1s; }
+        .person-4 { top: 72%; right: 6%; animation-delay: 1.8s; }
+        .person-5 { top: 86%; left: 48%; animation-delay: 2.6s; }
+
+        .box {
+            background: linear-gradient(135deg, #f5ede3 0%, #ebe3d9 100%);
+            border: 4px solid #a08060;
+            box-shadow: 
+                0 0 0 2px #d6c5b2,
+                0 8px 16px rgba(139, 115, 85, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            padding: 35px;
+            margin: 60px auto;
+            max-width: 750px;
+            text-align: center;
+            position: relative;
+            animation: gentle-pulse 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .box::before {
+            content: "⚙ ◇ ⚙ ◇ ⚙ ◇ ⚙ ◇ ⚙";
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #a08060;
+            font-size: 14px;
+            background: #e5d4c1;
+            padding: 0 15px;
+        }
+
+        h2 {
+            color: #6b5644;
+            font-size: 28px;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        label {
+            color: #8b7355;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 12px;
+            margin: 10px 0 20px;
+            border: 3px solid #c4b5a0;
+            background: #ffffff;
+            color: #6b5644;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: center;
+            width: 200px;
+            box-shadow: inset 0 2px 4px rgba(139, 115, 85, 0.1);
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #a08060;
+            box-shadow: 0 0 0 3px rgba(160, 128, 96, 0.2);
+            background: #fffef9;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 8px 4px;
+            border: 3px solid #a08060;
+            background: linear-gradient(180deg, #d6c5b2 0%, #c7b6a3 100%);
+            color: #4a3f35;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 0 #a08060,
+                0 5px 8px rgba(139, 115, 85, 0.3);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        button:hover {
+            background: linear-gradient(180deg, #e5d4c1 0%, #d6c5b2 100%);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 0 #a08060,
+                0 7px 12px rgba(139, 115, 85, 0.4);
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 
+                0 2px 0 #a08060,
+                0 3px 5px rgba(139, 115, 85, 0.3);
+        }
+
+        h3 {
+            color: #8b7355;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        #result {
+            color: #6b5644;
+            font-size: 32px;
+            font-weight: bold;
+            display: inline-block;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #f5ede3 100%);
+            border: 3px solid #c4b5a0;
+            box-shadow: 
+                inset 0 2px 8px rgba(139, 115, 85, 0.1),
+                0 4px 8px rgba(139, 115, 85, 0.15);
+            min-width: 180px;
+            border-radius: 4px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(180deg, #c4b5a0 0%, #b5a590 100%);
+            border: 3px solid #8b7355;
+            color: #4a3f35;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #8b7355, 0 5px 8px rgba(139, 115, 85, 0.3);
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #8b7355, 0 7px 12px rgba(139, 115, 85, 0.4);
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #a08060;
+            opacity: 0.3;
+        }
+
+        .corner-tl { top: -8px; left: -8px; }
+        .corner-tr { top: -8px; right: -8px; }
+        .corner-bl { bottom: -8px; left: -8px; }
+        .corner-br { bottom: -8px; right: -8px; }
+
+        .loop-info {
+            background: rgba(160, 128, 96, 0.1);
+            border: 2px solid #c4b5a0;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            color: #6b5644;
+            font-size: 12px;
+            text-align: left;
+            box-shadow: inset 0 2px 4px rgba(139, 115, 85, 0.05);
+        }
+
+        .loop-info-title {
+            font-weight: bold;
+            color: #8b7355;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .icon {
+            display: inline-block;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-person person-1">🧍‍♂️</div>
+    <div class="pixel-person person-2">🚶</div>
+    <div class="pixel-person person-3">🧍‍♀️</div>
+    <div class="pixel-person person-4">🚶‍♀️</div>
+    <div class="pixel-person person-5">⚙</div>
+
+    <a href="index_enhanced_beige.html" class="back-button">← BACK</a>
+
+    <div class="box">
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
+
+        <h2>⚙ LOOP COMPUTATIONS ⚙</h2>
+
+        <label>Enter a Number (N)</label>
+        <input type="number" id="num" placeholder="0">
+
+        <div style="margin: 15px 0;">
+            <button onclick="computeFactorial()"><span class="icon">🔢</span> Factorial (While)</button>
+            <button onclick="computeSum()"><span class="icon">➕</span> Sum (Do While)</button>
+            <button onclick="computeAverage()"><span class="icon">📊</span> Average (For)</button>
+        </div>
+
+        <div class="loop-info">
+            <div class="loop-info-title">Loop Type Information:</div>
+            • <strong>WHILE LOOP:</strong> Computes factorial (N! = 1 × 2 × 3 × ... × N)<br>
+            • <strong>DO-WHILE LOOP:</strong> Computes sum (1 + 2 + 3 + ... + N)<br>
+            • <strong>FOR LOOP:</strong> Computes average of numbers 1 to N
+        </div>
+
+        <h3>Computation Result</h3>
+        <div id="result">0</div>
+    </div>
+
+    <script>
+        function computeFactorial() {
+            let n = Number(document.getElementById("num").value);
+            let i = 1;
+            let factorial = 1;
+
+            while (i <= n) {
+                factorial *= i;
+                i++;
+            }
+
+            document.getElementById("result").innerText = "Factorial: " + factorial;
+            flashResult();
+        }
+
+        function computeSum() {
+            let n = Number(document.getElementById("num").value);
+            let sum = 0;
+            let i = 1;
+
+            do {
+                sum += i;
+                i++;
+            } while (i <= n);
+
+            document.getElementById("result").innerText = "Sum: " + sum;
+            flashResult();
+        }
+
+        function computeAverage() {
+            let n = Number(document.getElementById("num").value);
+            let sum = 0;
+
+            for (let i = 1; i <= n; i++) {
+                sum += i;
+            }
+
+            let avg = sum / n;
+            document.getElementById("result").innerText = "Average: " + avg.toFixed(2);
+            flashResult();
+        }
+
+        function flashResult() {
+            const result = document.getElementById("result");
+            result.style.transform = "scale(1.05)";
+            setTimeout(() => {
+                result.style.transform = "scale(1)";
+            }, 200);
+        }
+    </script>
+</body>
+</html>
