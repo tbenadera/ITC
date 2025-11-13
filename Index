@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Benadera | CS1130 | All Assignments</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes gentle-glow {
+            0%, 100% { box-shadow: 0 8px 16px rgba(139, 115, 85, 0.2); }
+            50% { box-shadow: 0 10px 20px rgba(139, 115, 85, 0.3); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(180deg, #f0e4d0 0%, #e0d4c0 25%, #d0c4b0 50%, #c0b4a0 75%, #b0a490 100%);
+            min-height: 100vh;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 115, 85, 0.03) 2px, rgba(139, 115, 85, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .pixel-person {
+            position: fixed;
+            font-size: 28px;
+            animation: float 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.8;
+        }
+
+        .person-1 { top: 12%; left: 6%; animation-delay: 0s; }
+        .person-2 { top: 22%; right: 8%; animation-delay: 1.2s; }
+        .person-3 { top: 48%; left: 4%; animation-delay: 2.1s; }
+        .person-4 { top: 68%; right: 6%; animation-delay: 1.5s; }
+        .person-5 { top: 82%; left: 10%; animation-delay: 2.7s; }
+        .person-6 { top: 76%; right: 12%; animation-delay: 3.3s; }
+
+        h1 {
+            text-align: center;
+            color: #6b5644;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.6);
+            font-size: 42px;
+            margin: 40px 0 10px;
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b7355;
+            font-size: 18px;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .assignment-box {
+            background: linear-gradient(135deg, #faf6f0 0%, #f0ebe3 100%);
+            border: 4px solid #8b7355;
+            box-shadow: 
+                0 0 0 2px #d4c4b0,
+                0 8px 16px rgba(139, 115, 85, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            padding: 28px;
+            margin: 25px auto;
+            position: relative;
+            transition: all 0.3s;
+            animation: slideIn 0.6s ease-out;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+        }
+
+        .assignment-box:nth-child(1) { 
+            animation-delay: 0.1s; 
+            border-color: #9d8468;
+        }
+        .assignment-box:nth-child(2) { 
+            animation-delay: 0.2s;
+            border-color: #a08060;
+        }
+        .assignment-box:nth-child(3) { 
+            animation-delay: 0.3s;
+            border-color: #9a7a5a;
+        }
+        .assignment-box:nth-child(4) { 
+            animation-delay: 0.4s;
+            border-color: #8b7355;
+        }
+
+        .assignment-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 0 2px #d4c4b0,
+                0 12px 24px rgba(139, 115, 85, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .assignment-box::before {
+            content: "→";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            color: #8b7355;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .assignment-box:hover::before {
+            left: 25px;
+            opacity: 1;
+        }
+
+        .assignment-number {
+            color: #8b7355;
+            font-size: 48px;
+            font-weight: bold;
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.2;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        h3 {
+            color: #6b5644;
+            margin-bottom: 10px;
+            margin-left: 55px;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: #8b7355;
+            margin-left: 55px;
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: currentColor;
+            opacity: 0.3;
+        }
+
+        .corner-tl { top: -6px; left: -6px; }
+        .corner-tr { top: -6px; right: -6px; }
+        .corner-bl { bottom: -6px; left: -6px; }
+        .corner-br { bottom: -6px; right: -6px; }
+
+        .box-1 .corner-decoration { color: #9d8468; }
+        .box-2 .corner-decoration { color: #a08060; }
+        .box-3 .corner-decoration { color: #9a7a5a; }
+        .box-4 .corner-decoration { color: #8b7355; }
+
+        .stats-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #8b7355;
+            padding: 15px;
+            color: #6b5644;
+            font-size: 13px;
+            z-index: 1000;
+            min-width: 160px;
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+        }
+
+        .stat-item {
+            margin: 6px 0;
+            letter-spacing: 1px;
+        }
+
+        .icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Assignment sections */
+        .section {
+            min-height: 100vh;
+            padding: 80px 20px 50px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .program-box {
+            background: linear-gradient(135deg, #faf6f0 0%, #f0ebe3 100%);
+            border: 4px solid;
+            box-shadow: 
+                0 0 0 2px #d4c4b0,
+                0 8px 16px rgba(139, 115, 85, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            padding: 35px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 8px 16px;
+            background: linear-gradient(180deg, #c4b5a0 0%, #b5a590 100%);
+            border: 3px solid #8b7355;
+            color: #4a3f35;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 3px 0 #8b7355;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 0 #8b7355;
+        }
+
+        h2 {
+            color: #6b5644;
+            font-size: 28px;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        label {
+            color: #8b7355;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 12px;
+            margin: 10px auto;
+            border: 3px solid #c4b5a0;
+            background: #ffffff;
+            color: #6b5644;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: inset 0 2px 4px rgba(139, 115, 85, 0.1);
+            display: block;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #8b7355;
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.2);
+            background: #fffef9;
+        }
+
+        button {
+            padding: 12px 24px;
+            margin: 8px;
+            border: 3px solid #8b7355;
+            background: linear-gradient(180deg, #d4c4b0 0%, #c4b5a0 100%);
+            color: #4a3f35;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #8b7355;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(180deg, #e0d5c5 0%, #d4c4b0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #8b7355;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #8b7355;
+        }
+
+        .result-display {
+            color: #6b5644;
+            font-size: 32px;
+            font-weight: bold;
+            display: inline-block;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #faf6f0 100%);
+            border: 3px solid #c4b5a0;
+            box-shadow: inset 0 2px 8px rgba(139, 115, 85, 0.1);
+            min-width: 180px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .info-box {
+            background: rgba(139, 115, 85, 0.08);
+            border: 2px solid #c4b5a0;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            color: #6b5644;
+            font-size: 13px;
+            text-align: left;
+            box-shadow: inset 0 2px 4px rgba(139, 115, 85, 0.05);
+        }
+
+        .result-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(139, 115, 85, 0.08);
+            border: 2px solid #c4b5a0;
+            border-radius: 4px;
+        }
+
+        .result-item {
+            color: #6b5644;
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .result-value {
+            color: #8b7355;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .assignment-box { padding: 22px; }
+            h3 { font-size: 18px; margin-left: 45px; }
+            p { margin-left: 45px; }
+            .assignment-number { font-size: 36px; right: 15px; }
+            .stats-box { position: relative; top: 0; right: 0; margin: 0 auto 30px; max-width: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-person person-1">🧍‍♂️</div>
+    <div class="pixel-person person-2">🧍‍♀️</div>
+    <div class="pixel-person person-3">🚶</div>
+    <div class="pixel-person person-4">🚶‍♀️</div>
+    <div class="pixel-person person-5">💼</div>
+    <div class="pixel-person person-6">📚</div>
+
+    <div class="stats-box">
+        <div class="stat-item">◆ LEVEL: CS1130</div>
+        <div class="stat-item">◆ STUDENT: BENADERA</div>
+        <div class="stat-item">◆ ASSIGNMENTS: 4</div>
+    </div>
+
+    <div id="top">
+        <h1>★ BENADERA ★</h1>
+        <div class="subtitle">CS1130 | ASSIGNMENT PORTAL</div>
+
+        <div class="container">
+            <a href="#assignment1" class="assignment-box box-1">
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                <div class="assignment-number">#1</div>
+                <h3><span class="icon">⚖</span> Conversion Program</h3>
+                <p>Temperature & Distance Converter</p>
+                <p style="margin-top: 5px;">Convert Celsius ↔ Fahrenheit | Meters ↔ Feet</p>
+            </a>
+
+            <a href="#assignment2" class="assignment-box box-2">
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                <div class="assignment-number">#2</div>
+                <h3><span class="icon">💰</span> Income Tax Calculator</h3>
+                <p>Calculate tax based on income brackets</p>
+                <p style="margin-top: 5px;">Progressive taxation system with 4 tiers</p>
+            </a>
+
+            <a href="#assignment3" class="assignment-box box-3">
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                <div class="assignment-number">#3</div>
+                <h3><span class="icon">⚙</span> Loop Computations</h3>
+                <p>Factorial (While) | Sum (Do-While) | Average (For)</p>
+                <p style="margin-top: 5px;">Master different loop types in JavaScript</p>
+            </a>
+
+            <a href="#assignment4" class="assignment-box box-4">
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                <div class="assignment-number">#4</div>
+                <h3><span class="icon">💼</span> Simple Payroll System</h3>
+                <p>Calculate Gross Pay & Net Pay</p>
+                <p style="margin-top: 5px;">Employee payroll with deductions included</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- ASSIGNMENT 1 -->
+    <section id="assignment1" class="section">
+        <div class="program-box" style="border-color: #9d8468;">
+            <a href="#top" class="back-btn">← BACK</a>
+            <h2>⚖ CONVERSION PROGRAM ⚖</h2>
+            <label>Enter Value</label>
+            <input type="number" id="value1" placeholder="0" style="max-width: 200px;">
+            <div style="margin: 15px 0;">
+                <button onclick="cToF()">🌡 Celsius → Fahrenheit</button>
+                <button onclick="fToC()">❄ Fahrenheit → Celsius</button>
+            </div>
+            <div>
+                <button onclick="mToFt()">📏 Meters → Feet</button>
+                <button onclick="ftToM()">📐 Feet → Meters</button>
+            </div>
+            <h3 style="color: #8b7355; margin: 25px 0 15px; text-align: center;">Result</h3>
+            <div class="result-display" id="result1">0</div>
+        </div>
+    </section>
+
+    <!-- ASSIGNMENT 2 -->
+    <section id="assignment2" class="section">
+        <div class="program-box" style="border-color: #a08060;">
+            <a href="#top" class="back-btn">← BACK</a>
+            <h2>💰 INCOME TAX CALCULATOR</h2>
+            <label>Enter Income Amount</label>
+            <input type="number" id="income2" placeholder="0" style="max-width: 250px;">
+            <button onclick="calculateTax()" style="margin-top: 15px;">📊 Compute Tax</button>
+            <div class="info-box">
+                <strong style="color: #8b7355;">Tax Bracket Information:</strong><br>
+                • ₱0 - ₱10,000: 5% tax rate<br>
+                • ₱10,001 - ₱30,000: 10% tax rate<br>
+                • ₱30,001 - ₱60,000: 15% tax rate<br>
+                • ₱60,001+: 20% tax rate
+            </div>
+            <h3 style="color: #8b7355; margin: 25px 0 15px; text-align: center;">Tax Result</h3>
+            <div class="result-display" id="result2">₱0.00</div>
+        </div>
+    </section>
+
+    <!-- ASSIGNMENT 3 -->
+    <section id="assignment3" class="section">
+        <div class="program-box" style="border-color: #9a7a5a;">
+            <a href="#top" class="back-btn">← BACK</a>
+            <h2>⚙ LOOP COMPUTATIONS ⚙</h2>
+            <label>Enter a Number (N)</label>
+            <input type="number" id="num3" placeholder="0" style="max-width: 200px;">
+            <div style="margin: 15px 0;">
+                <button onclick="computeFactorial()">🔢 Factorial (While)</button>
+                <button onclick="computeSum()">➕ Sum (Do While)</button>
+                <button onclick="computeAverage()">📊 Average (For)</button>
+            </div>
+            <div class="info-box">
+                <strong style="color: #8b7355;">Loop Type Information:</strong><br>
+                • <strong>WHILE:</strong> Factorial (N! = 1 × 2 × 3 × ... × N)<br>
+                • <strong>DO-WHILE:</strong> Sum (1 + 2 + 3 + ... + N)<br>
+                • <strong>FOR:</strong> Average of 1 to N
+            </div>
+            <h3 style="color: #8b7355; margin: 25px 0 15px; text-align: center;">Computation Result</h3>
+            <div class="result-display" id="result3">0</div>
+        </div>
+    </section>
+
+    <!-- ASSIGNMENT 4 -->
+    <section id="assignment4" class="section">
+        <div class="program-box" style="border-color: #8b7355;">
+            <a href="#top" class="back-btn">← BACK</a>
+            <h2>💼 SIMPLE PAYROLL SYSTEM</h2>
+            <label>👤 Employee Name:</label>
+            <input type="text" id="empName4" placeholder="Enter name">
+            <label>⏰ Days Worked:</label>
+            <input type="number" id="daysWorked4" placeholder="0">
+            <label>💵 Daily Rate:</label>
+            <input type="number" id="dailyRate4" placeholder="0">
+            <label>➖ Deduction Amount:</label>
+            <input type="number" id="deduction4" placeholder="0">
+            <div style="margin-top: 15px;">
+                <button onclick="calculatePayroll()">💰 Calculate Payroll</button>
+                <button onclick="clearPayroll()" style="background: linear-gradient(180deg, #b5a590 0%, #a69580 100%);">🔄 Clear</button>
+            </div>
+            <div class="result-section" id="resultSection4" style="display:none;">
+                <h3 style="color: #8b7355; text-align: center; margin-bottom: 15px;">Payroll Result</h3>
+                <div class="result-item">Employee: <span class="result-value" id="resultName4">-</span></div>
+                <div class="result-item">Gross Pay: <span class="result-value" id="grossPay4">₱0.00</span></div>
+                <div class="result-item">Deduction: <span class="result-value" id="resultDeduction4">₱0.00</span></div>
+                <div class="result-item" style="font-weight: bold;">Net Pay: <span class="result-value" id="netPay4" style="font-size: 24px;">₱0.00</span></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ASSIGNMENT 1
+        function cToF() {
+            let c = Number(document.getElementById("value1").value);
+            let f = (c * 9/5) + 32;
+            document.getElementById("result1").innerText = f.toFixed(2) + " °F";
+        }
+        function fToC() {
+            let f = Number(document.getElementById("value1").value);
+            let c = (f - 32) * 5/9;
+            document.getElementById("result1").innerText = c.toFixed(2) + " °C";
+        }
+        function mToFt() {
+            let m = Number(document.getElementById("value1").value);
+            let ft = m * 3.28084;
+            document.getElementById("result1").innerText = ft.toFixed(2) + " ft";
+        }
+        function ftToM() {
+            let ft = Number(document.getElementById("value1").value);
+            let m = ft / 3.28084;
+            document.getElementById("result1").innerText = m.toFixed(2) + " m";
+        }
+
+        // ASSIGNMENT 2
+        function calculateTax() {
+            let income = Number(document.getElementById("income2").value);
+            let tax = 0;
+            if (income <= 10000) tax = income * 0.05;
+            else if (income <= 30000) tax = income * 0.10;
+            else if (income <= 60000) tax = income * 0.15;
+            else tax = income * 0.20;
+            document.getElementById("result2").innerText = "₱" + tax.toFixed(2);
+        }
+
+        // ASSIGNMENT 3
+        function computeFactorial() {
+            let n = Number(document.getElementById("num3").value);
+            let i = 1, factorial = 1;
+            while (i <= n) { factorial *= i; i++; }
+            document.getElementById("result3").innerText = "Factorial: " + factorial;
+        }
+        function computeSum() {
+            let n = Number(document.getElementById("num3").value);
+            let sum = 0, i = 1;
+            do { sum += i; i++; } while (i <= n);
+            document.getElementById("result3").innerText = "Sum: " + sum;
+        }
+        function computeAverage() {
+            let n = Number(document.getElementById("num3").value);
+            let sum = 0;
+            for (let i = 1; i <= n; i++) sum += i;
+            document.getElementById("result3").innerText = "Average: " + (sum / n).toFixed(2);
+        }
+
+        // ASSIGNMENT 4
+        function calculatePayroll() {
+            let name = document.getElementById("empName4").value;
+            let days = Number(document.getElementById("daysWorked4").value);
+            let rate = Number(document.getElementById("dailyRate4").value);
+            let deduction = Number(document.getElementById("deduction4").value);
+            if (!name || days <= 0 || rate <= 0) {
+                alert("⚠️ Please fill in all fields correctly!");
+                return;
+            }
+            let grossPay = days * rate;
+            let netPay = grossPay - deduction;
+            document.getElementById("resultName4").innerText = name;
+            document.getElementById("grossPay4").innerText = "₱" + grossPay.toFixed(2);
+            document.getElementById("resultDeduction4").innerText = "₱" + deduction.toFixed(2);
+            document.getElementById("netPay4").innerText = "₱" + netPay.toFixed(2);
+            document.getElementById("resultSection4").style.display = "block";
+        }
+        function clearPayroll() {
+            document.getElementById("empName4").value = "";
+            document.getElementById("daysWorked4").value = "";
+            document.getElementById("dailyRate4").value = "";
+            document.getElementById("deduction4").value = "";
+            document.getElementById("resultSection4").style.display = "none";
+        }
+    </script>
+</body>
+</html>
